@@ -86,7 +86,7 @@ function drawBall() {
 }
 // Визуализация платформы
 function drawPaddle() {
-      const radius = 5; 
+      const radius = 5; // Radius of rounded corners
       $.beginPath();
       $.moveTo(paddle.x + radius, paddle.y);
       $.lineTo(paddle.x + paddle.w - radius, paddle.y);
@@ -102,6 +102,10 @@ function drawPaddle() {
       $.closePath();
     }
 
+function drawScore() {
+  $.font = "20px Helvetica";
+//   $.fillText(`Score: ${score}`, w - 100, 30);
+}
 // Визуализация блоков
 function drawBricks() {
   bricks.forEach((col) => {
