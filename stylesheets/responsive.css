@@ -1,3 +1,13 @@
+@media all and (min-width: 1729px){
+  body {
+      height: 50.70vw;
+  }
+  .swiper {
+  height: 46vw;
+  width: 79.50vw;
+  border-radius: 1.16vw;
+  }
+  }
 @media all and (min-width: 1441px) and (max-width: 1728px){
     body {
         height: 53.70vw;
