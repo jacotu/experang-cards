@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Experang Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <link rel="icon" type="image/x-icon" href="images/icon.ico">
+  <link rel="icon" type="image/png" href="images/icon.png">
+  <!-- Свайпер CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body>
+  <header>
+    <div id="logo"></div>
+    <div class="headers">
+      <a href="https://portfolio.hse.ru/Student/20122" class="headerh">ПОРТФОЛИО</a>
+      <a href="https://adc.ac/" class="headerh">ВЕБ-ПЛАКАТЫ</a>
+      <a href="https://hsedesign.ru/" class="headerh">КРЕДИТСЫ</a>
+    </div>
+    </div>  
+  </header>
+  <!-- Свайпер -->
+    <div class="swiper-counter">
+      <div class="swiper-counter__number">01</div>
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide tilt" id="swiper1" onclick="goToPage1()" data-background-color="#3270DA" data-card-number="02">
+            <div class="textfade">ТЕТРИС</div>
+          </div>
+          <div class="swiper-slide tilt" id="swiper2" onclick="goToPage2()" data-background-color="#CFBD18" data-card-number="03">
+            <div class="textfade">ЗМЕЙКА</div>
+          </div>
+          <div class="swiper-slide tilt" id="swiper3" onclick="goToPage3()" data-background-color="#7952B0" data-card-number="04">
+            <div class="textfade">БРЕЙКАУТ</div>
+          </div>
+          <div class="swiper-slide tilt" id="swiper4" onclick="goToPage4()" data-background-color="#D98F20" data-card-number="01">
+            <div class="textfade">АЭРОХОККЕЙ</div>
+          </div>
+       </div>
+      </div>
+      <div class="swiper-counter__total">04</div>
+    </div>
+  <!-- Курсор -->
+  <div id="trail"></div>
+
+  <!-- Свайпер JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>

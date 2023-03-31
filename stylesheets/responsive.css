@@ -1,0 +1,117 @@
+@media all and (min-width: 1441px) and (max-width: 1728px){
+    body {
+        height: 53.70vw;
+    }
+    .swiper {
+    height: 45vw;
+    width: 79.17vw;
+    border-radius: 1.16vw;
+    }
+    }
+  @media all and (min-width: 1366px) and (max-width: 1440px) {
+    body {
+        height: 58.26vw;
+    }
+    .swiper {
+        /* height: 46vw; */
+        max-height: 46vw;
+        width: 79.17vw;
+        border-radius: 1.16vw;
+      }
+      .swiper-slide {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Spektra', Arial, sans-serif;;
+        font-weight: 600;
+        font-size: 9.57vw;
+        line-height: 16.78vw;
+        font-feature-settings: 'ss03' on;
+        color: #F7F7F9;
+      }
+
+    }
+    @media all and (min-width: 768px) and (max-width: 1366px) {
+        body {
+            height: 56.52vw;
+        }
+        .swiper {
+            /* height: 46vw; */
+            max-height: 46vw;
+            width: 79.17vw;
+            border-radius: 1.16vw;
+          }
+          .swiper-slide {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Spektra', Arial, sans-serif;;
+            font-weight: 600;
+            font-size: 9.57vw;
+            line-height: 16.78vw;
+            font-feature-settings: 'ss03' on;
+            color: #F7F7F9;
+          }
+    
+        }
+    @media all and (min-width: 414px) and (max-width: 768px) {
+        body {
+            height: 97.66vw;
+        }
+        .swiper {
+            height: 85vw;
+            width: 79.17vw;
+            border-radius: 1.16vw;
+        }
+          .swiper-slide {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Spektra', Arial, sans-serif;;
+            font-weight: 600;
+            font-size: 8.57vw;
+            line-height: 16.78vw;
+            font-feature-settings: 'ss03' on;
+            color: #F7F7F9;
+          }
+          #swiper1 {
+            background-image: url(../images/cardmini1.svg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-color: transparent;
+          }
+          
+          #swiper2 {
+            background-image: url(../images/cardmini2.svg);
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+          
+          #swiper3 {
+            background-image: url(../images/cardmini3.svg);
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+          
+          #swiper4 {
+            background-image: url(../images/cardmini4.svg);
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+            .headers {
+             display: none;
+              }
+            #logo {
+                width: 23vw;
+                height: 10vw;
+                position: relative;
+                background-image: url(../images/logo.svg);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 100% auto;
+                margin: 0 auto;
+            }  
+        }

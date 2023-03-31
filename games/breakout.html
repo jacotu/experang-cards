@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Experang Breakout</title>
+  <meta charset="UTF-8">
+  <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    background: #9263D5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  </style>
+</head>
+<body>
+<canvas width="800" height="600"></canvas>
+<script>
+const canvas = document.querySelector("canvas");
+const $ = canvas.getContext("2d");
+const w = canvas.width;
+const h = canvas.height;
+
+let score = 0;
+
+// Количество блоков
+const brickRows = 5;
+const brickCols = 4;
+
+// Мячик
+const ball = {
+  x: w / 2,
+  y: h / 2,
+  size: 15,
+  speed: 1,
+  dx: 4,
+  dy: -4
+};
+
+// Платформа
+const paddle = {
+  x: w / 2 - 40,
+  y: h - 30,
+  w: 155,
+  h: 25,
+  speed: 8,
+  dx: 0
+};
+
+// Блок
+const brick = {
+  w: 140,
+  h: 40,
+  padding: 10,
+  offsetX: 35,
+  offsetY: 60,
+  visible: true
+};
+
+// Блоки
+const bricks = [];
+for (let i = 0; i < brickRows; i++) {
+  bricks[i] = [];
+  for (let j = 0; j < brickCols; j++) {
+    const x = i * (brick.w + brick.padding) + brick.offsetX;
+    const y = j * (brick.h + brick.padding) + brick.offsetY;
+    bricks[i][j] = {
+      x,
+      y,
+      ...brick
+    };
+  }
+}
+
+// Визуализация мяча
+function drawBall() {
+  $.beginPath();
+  $.arc(ball.x, ball.y, ball.size, 0, 3 * Math.PI);
+  $.fillStyle = "#E8D41A";
+  $.fill();
+  $.closePath();
+}
+// Визуализация платформы
+function drawPaddle() {
+      const radius = 5; // Radius of rounded corners
+      $.beginPath();
+      $.moveTo(paddle.x + radius, paddle.y);
+      $.lineTo(paddle.x + paddle.w - radius, paddle.y);
+      $.arcTo(paddle.x + paddle.w, paddle.y, paddle.x + paddle.w, paddle.y + radius, radius);
+      $.lineTo(paddle.x + paddle.w, paddle.y + paddle.h - radius);
+      $.arcTo(paddle.x + paddle.w, paddle.y + paddle.h, paddle.x + paddle.w - radius, paddle.y + paddle.h, radius);
+      $.lineTo(paddle.x + radius, paddle.y + paddle.h);
+      $.arcTo(paddle.x, paddle.y + paddle.h, paddle.x, paddle.y + paddle.h - radius, radius);
+      $.lineTo(paddle.x, paddle.y + radius);
+      $.arcTo(paddle.x, paddle.y, paddle.x + radius, paddle.y, radius);
+      $.fillStyle = "#E8D41A";
+      $.fill();
+      $.closePath();
+    }
+
+function drawScore() {
+  $.font = "20px Helvetica";
+//   $.fillText(`Score: ${score}`, w - 100, 30);
+}
+// Визуализация блоков
+function drawBricks() {
+  bricks.forEach((col) => {
+    col.forEach((brick) => {
+      $.beginPath();
+      $.moveTo(brick.x + 5, brick.y);
+      $.arcTo(brick.x + brick.w, brick.y, brick.x + brick.w, brick.y + 5, 5);
+      $.arcTo(brick.x + brick.w, brick.y + brick.h, brick.x + brick.w - 5, brick.y + brick.h, 5);
+      $.arcTo(brick.x, brick.y + brick.h, brick.x, brick.y + brick.h - 5, 5);
+      $.arcTo(brick.x, brick.y, brick.x + 5, brick.y, 5);
+      $.fillStyle = brick.visible ? "#E8D41A" : "transparent";
+      $.fill();
+      $.closePath();
+    });
+  });
+}
+
+function movePaddle() {
+  paddle.x += paddle.dx;
+
+  // wall?
+  if (paddle.x + paddle.w > w) {
+    paddle.x = w - paddle.w;
+  } else if (paddle.x < 0) {
+    paddle.x = 0;
+  }
+}
+
+function moveBall() {
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  // Физика всех блоков
+  if (ball.x + ball.size > w || ball.x - ball.size < 0) {
+    ball.dx *= -1; // ball.dx = ball.dx * -1
+  } else if (ball.y + ball.size > h || ball.y - ball.size < 0) {
+    ball.dy *= -1;
+  }
+
+  // Физика платформы
+  if (
+    ball.x - ball.size > paddle.x &&
+    ball.x + ball.size < paddle.x + paddle.w &&
+    ball.y + ball.size > paddle.y
+  ) {
+    ball.dy = -ball.speed;
+  }
+
+  // Физика отдельного блока
+  bricks.forEach((col) => {
+    col.forEach((brick) => {
+      if (brick.visible) {
+        if (
+          ball.x - ball.size > brick.x && // left
+          ball.x + ball.size < brick.x + brick.w && // right
+          ball.y + ball.size > brick.y && // top
+          ball.y - ball.size < brick.y + brick.h // bottom
+        ) {
+          ball.dy *= -1;
+          ball.speed += 0.25;
+          brick.visible = false;
+
+          increaseScore();
+        }
+      }
+    });
+  });
+
+  // Конец игры
+  if (ball.y + ball.size > h) {
+    showBricks();
+    score = 0;
+  }
+}
+
+function increaseScore() {
+  score++;
+
+  if (score % brickRows ** 2 === 0) showBricks();
+}
+
+function showBricks() {
+  bricks.forEach((col) => {
+    col.forEach((brick) => (brick.visible = true));
+  });
+  ball.speed = 4;
+}
+
+// Визуализация игры
+function drawAll() {
+  $.clearRect(0, 0, w, h);
+
+  drawBall();
+  drawPaddle();
+  drawScore();
+  drawBricks();
+}
+
+// Инициализация игры
+function update() {
+  movePaddle();
+  moveBall();
+
+  drawAll();
+
+  requestAnimationFrame(update);
+}
+
+update();
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Right" || e.key === "ArrowRight") {
+    paddle.dx = paddle.speed;
+  } else if (e.key === "Left" || e.key === "ArrowLeft") {
+    paddle.dx = -paddle.speed;
+  }
+});
+document.addEventListener("keyup", () => (paddle.dx = 0));
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Experang Hockey</title>
+  <meta charset="UTF-8">
+  <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    background: #FBB404;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  </style>
+</head>
+<body>
+    <canvas id="pong" width="800" height="600"></canvas>
+<script>
+    const canvas = document.getElementById("pong");
+const context = canvas.getContext("2d");
+
+// Платформа пользователя
+const user = {
+        x: 0,
+        y: canvas.height/2 - 100/2,
+        width: 20,
+        height: 130,
+        color: "#F16A28",
+        score: 0
+}
+
+// Платформа компьютера
+const com = {
+        x: canvas.width - 20,
+        y: canvas.height/2 - 100/2,
+        width: 20,
+        height: 130,
+        color: "#F16A28",
+        score: 0
+}
+
+// Мячик
+const ball = {
+        x: canvas.width/2,
+        y: canvas.height/2,
+        radius: 15,
+        speed: 5,
+        velocityX: 5,
+        velocityY: 5,
+        color: "#F16A28"
+}
+
+// Визуализация платформы
+function drawRect(x,y,w,h,color){
+        context.fillStyle = color;
+        context.fillRect(x,y,w,h);
+}
+
+//  Визуализация мяча
+function drawCircle(x,y,r,color){
+        context.fillStyle = color;
+        context.beginPath();
+        context.arc(x,y,r,0,Math.PI*2,false);
+        context.closePath();
+        context.fill();
+}
+
+// Контроль за платформой
+canvas.addEventListener("mousemove",movePaddle);
+
+function movePaddle(evt){
+        let rect = canvas.getBoundingClientRect();
+        user.y = evt.clientY - rect.top - user.height/2;
+}
+
+// Обнаружение столкновения (b = мяч, p = игрок)
+function collision(b,p){
+        b.top = b.y - b.radius;
+        b.bottom = b.y + b.radius;
+        b.left = b.x - b.radius;
+        b.right = b.x + b.radius;
+
+        p.top = p.y;
+        p.bottom = p.y + p.height;
+        p.left = p.x;
+        p.right = p.x + p.width;
+
+        return b.right > p.left && b.bottom > p.top && b.left < p.right && b.top < p.bottom;
+}
+
+// Сброс мяча
+function resetBall(){
+        ball.x = canvas.width/2;
+        ball.y = canvas.height/2;
+        ball.velocityX = -ball.velocityX;
+        ball.speed = 5;
+}
+
+// Обновления
+function update(){
+    
+        if( ball.x - ball.radius < 0 ){
+            com.score++;
+            resetBall();
+        }else if( ball.x + ball.radius > canvas.width){
+            user.score++;
+            resetBall();
+        }
+        
+        // Увеличение скорости мяча
+        ball.x += ball.velocityX;
+        ball.y += ball.velocityY;
+        
+        // ИИ
+        com.y += ((ball.y - (com.y + com.height/2)))*0.1;
+        
+        // Когда мяч сталкивается с нижней или верхней стенкой, смена скорости y на обратную.
+        if(ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height){
+            ball.velocityY = -ball.velocityY;
+        }
+        let player = (ball.x + ball.radius < canvas.width/2) ? user : com;
+        
+        // Ситуация при столкновении
+        if(collision(ball,player)){
+            // Проверка столкновения
+            let collidePoint = (ball.y - (player.y + player.height/2));
+            collidePoint = collidePoint / (player.height/2);
+            let angleRad = (Math.PI/4) * collidePoint;
+            
+            // Изменение направление скорости X и Y
+            let direction = (ball.x + ball.radius < canvas.width/2) ? 1 : -1;
+            ball.velocityX = direction * ball.speed * Math.cos(angleRad);
+            ball.velocityY = ball.speed * Math.sin(angleRad);
+            
+            // Ускорение мяча при столкновении
+            ball.speed += 0.5;
+        }
+        
+        // Ограничение скорости мяча
+        if(ball.speed >= 30){
+                ball.speed = 30;
+        }
+    }
+
+// Визуализация игры
+function render(){
+
+        drawRect(0,0, canvas.clientWidth, canvas.clientHeight, "#FBB404");
+        drawRect(user.x, user.y, user.width, user.height, user.color);
+        drawRect(com.x, com.y, com.width, com.height, com.color);
+        drawCircle(ball.x, ball.y, ball.radius, ball.color);
+}
+
+// Инициализация игры
+function game(){
+        update();
+        render();
+}
+
+// Фреймрейт
+const framePerSecond = 60;
+setInterval(game, 1000/framePerSecond);
+</script>
+</body>
+</html>
